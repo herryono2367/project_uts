@@ -16,5 +16,5 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/tasks', 'Taskcontroller@index');
-Route::get('/tasks/{task}','Taskcontroller@show');
+Route::get('/products', 'Productcontroller@index');
+Route::get('/products/{product}','Productcontroller@show');
