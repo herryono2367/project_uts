@@ -14,13 +14,11 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        // $products = Product::all();
-        $products = Product::with('category')->get();
-        return response()->json($products);
-        
-        
-    }
+        {
+        $products = Product::all();
+        // $products = Product::with('category')->get();
+        return response()->json($products);     
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -40,20 +38,21 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validate= Validator::make($request->all(),[
-        'name'=>           'required',
-        'description'=>    'required',
-        'price'=>          'required',
-        'category_id'=>    'required'
-        ]);
-        if ($validate->passes()){
-            $product= Product::create($request->all());
+        return Product::create($request->all());
+         $validate= Validator::make($request->all(),[
+         'name'=>           'required',
+         'description'=>    'required',
+         'price'=>          'required',
+         'category_id'=>    'required'
+         ]);
+         if ($validate->passes()){
+             $product= Product::create($request->all());
             return response()->json([
-            'message'=> 'data berhasil disimpan',
-            'data'=>$product
-            ]);
-        } else{
-        return response()->json([
+           'message'=> 'data berhasil disimpan',
+             'data'=>$product
+             ]);
+         } else{
+         return response()->json([
             'message'=> 'data gagal disimpan',
             'status'=>$validate->errors()->all()]);
         }
@@ -68,13 +67,13 @@ class ProductController extends Controller
     public function show(  $product )
     {
         // return $product;
-        $products = Product::with('category')->where('id', $product)->first();
-        return response()->json($products);
-        // $data = Product::where('id', $product)->first();
-        // if (!empty($data)){
-        //     return $data;
-        // }
-        // return response()->json(['message'=> 'data tidak ditemukan'], 404);
+        // $products = Product::with('category')->where('id', $product)->first();
+        // return response()->json($products);
+        $data = Product::where('id', $product)->first();
+        if (!empty($data)){
+            return $data;
+        }
+        return response()->json(['message'=> 'data tidak ditemukan'], 404);
         
     }
 
@@ -142,9 +141,7 @@ class ProductController extends Controller
             return response()->json([
                 'message' => 'Data tidak di temukan' ],404);
         }
-        
-        
-    
+       
        $data->delete();
        return response()->json([
            'message'=> 'data telah dihapus'
